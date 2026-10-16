@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brand Network Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Archivo:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="/shared.js"></script>
+<style>
+:root{color-scheme:dark;--night:#121416;--panel:#1a1d20;--panel-2:#23272b;--line:#363b41;--ink:#f1ece0;--muted:#a8a294;--danfo:#f2c230;--danfo-ink:#1a1609;--go:#2fae6b;--stop:#e2533c;--info:#6fa8ff;
+  --display:'Bungee','Arial Black',Impact,sans-serif;--body:'Archivo',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--night);color:var(--ink);font-family:var(--body);font-size:14px}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--danfo);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:grid;gap:18px}
+header.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px}
+h1{margin:0;font-family:var(--display);font-weight:400;font-size:26px;color:var(--danfo)}
+.eyebrow{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+nav{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--line)}
+nav button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 12px 8px;font-weight:600;color:var(--muted);white-space:nowrap}
+nav button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--danfo)}
+section{display:grid;gap:14px}
+.note{font-size:13px;color:var(--muted);line-height:1.5;margin:0;max-width:70ch}
+label{font-size:12px;font-weight:600;color:var(--muted);display:grid;gap:5px}
+input[type=text],input[type=date],input[type=password]{background:var(--night);border:1px solid var(--line);border-radius:6px;color:var(--ink);padding:8px 10px;font:inherit;width:100%;min-width:0}
+input[type=color]{width:44px;height:34px;border:1px solid var(--line);border-radius:6px;background:var(--night);padding:2px}
+.btn{background:var(--danfo);color:var(--danfo-ink);border:0;border-radius:6px;padding:9px 14px;font-weight:800;font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.btn-sm{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-weight:600;font-size:12px}
+.btn-sm.warn{border-color:var(--stop);color:#ff9b88}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.camps{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.camp{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:10px;background:var(--panel)}
+.camp h3{margin:0;font-size:15px}
+.meta{font-size:12px;color:var(--muted);line-height:1.5}
+.pill{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px}
+.Live{background:rgba(47,174,107,.18);color:#7fe0ad}.Scheduled{background:rgba(111,168,255,.16);color:#a9c9ff}.Paused{background:rgba(168,162,148,.16);color:var(--muted)}.Ended{background:rgba(226,83,60,.16);color:#ff9b88}.Fallback{background:rgba(242,194,48,.12);color:var(--danfo)}
+.demo{border:1px solid var(--danfo);color:var(--danfo)}
+canvas.cr{width:100%;height:auto;border-radius:4px;display:block}
+form.newc{border:1px dashed var(--line);border-radius:10px;padding:16px;display:grid;gap:12px;background:var(--panel)}
+.checks{display:flex;flex-wrap:wrap;gap:6px 14px}.checks label{display:flex;gap:6px;align-items:center;color:var(--ink);font-weight:400;font-size:13px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--panel-2)}
+.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}
+.kpi b{display:block;font-family:var(--mono);font-size:24px;margin-top:4px}
+.err{color:#ff9b88;font-size:13px}
+.mono{font-family:var(--mono)}
+select,textarea{background:var(--night);border:1px solid var(--line);border-radius:6px;color:var(--ink);padding:8px 10px;font:inherit;width:100%;min-width:0}
+textarea{min-height:84px;resize:vertical;line-height:1.4}
+input[type=number]{background:var(--night);border:1px solid var(--line);border-radius:6px;color:var(--ink);padding:8px 10px;font:inherit;width:100%}
+.hint{font-weight:400;font-size:11.5px;color:var(--muted);line-height:1.35}
+fieldset{border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;gap:12px;margin:0}
+legend{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--danfo);font-weight:700;padding:0 6px}
+.emojis{display:flex;flex-wrap:wrap;gap:4px}.emojis button{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;font-size:18px;padding:4px 7px;line-height:1}
+.jobprev{display:grid;grid-template-columns:58px 1fr;gap:12px;align-items:center;background:#1f7a43;border:3px solid #fff;outline:2px solid #000;border-radius:12px;padding:10px 12px;color:#fff;max-width:440px}
+.jobprev .ic{width:58px;height:58px;border-radius:10px;background:#fff8e8;border:2px solid #000;display:grid;place-items:center;font-size:30px}
+.jobprev small{color:#ffd75e;font-weight:700;font-size:12px}.jobprev b{display:block;font-family:var(--display);font-weight:400;font-size:20px;line-height:1.1}
+.jobprev em{display:block;font-style:normal;font-size:12.5px;color:#e8f5ec;margin-top:2px}
+.artrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--panel-2);border:1px solid var(--line);color:var(--muted)}
+.acts{display:flex;gap:6px;flex-wrap:nowrap}
+label{align-content:start}
+td.wr{white-space:normal;min-width:160px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div><span class="eyebrow">Lagos Driver</span><h1>Brand Network</h1></div>
+    <div class="row" id="authRow">
+      <label for="tok" style="min-width:220px">Admin token<input type="password" id="tok" placeholder="Paste ADMIN_TOKEN"></label>
+      <button class="btn" id="saveTok" type="button" style="align-self:end">Unlock</button>
+    </div>
+  </header>
+  <p class="err" id="authErr" hidden></p>
+  <nav id="tabs">
+    <button type="button" data-tab="overview" aria-selected="true">Overview</button>
+    <button type="button" data-tab="campaigns" aria-selected="false">Brands &amp; campaigns</button>
+    <button type="button" data-tab="jobs" aria-selected="false">Jobs</button>
+    <button type="button" data-tab="inventory" aria-selected="false">Inventory</button>
+    <button type="button" data-tab="analytics" aria-selected="false">Analytics</button>
+    <button type="button" data-tab="players" aria-selected="false">Players &amp; reports</button>
+  </nav>
+
+  <section data-panel="overview">
+    <div class="kpis">
+      <div class="kpi"><span class="eyebrow">Drivers online</span><b id="oOnline">—</b></div>
+      <div class="kpi"><span class="eyebrow">Registered drivers</span><b id="oPlayers">—</b></div>
+      <div class="kpi"><span class="eyebrow">Live campaigns</span><b id="oLive">—</b></div>
+      <div class="kpi"><span class="eyebrow">Impressions to date</span><b id="oImp">—</b></div>
+    </div>
+    <div class="tbl"><table><thead><tr><th>Shard</th><th>Zone</th><th class="num">Drivers</th></tr></thead><tbody id="oShards"></tbody></table></div>
+    <p class="note">Each zone opens a new shard when the current one reaches its cap (50 drivers by default, set with SHARD_CAP).</p>
+  </section>
+
+  <section data-panel="campaigns" hidden>
+    <p class="note">Saving here updates every connected player within a second. Billboards with no live campaign show the house ad; unsold danfos keep their painted slogans.</p>
+    <div class="camps" id="campList"></div>
+    <form class="newc" id="newCamp" autocomplete="off">
+      <div class="row" style="justify-content:space-between"><span class="eyebrow" id="campFormTitle">New campaign</span><button class="btn-sm" type="button" id="campCancel" hidden>Cancel editing</button></div>
+      <div class="grid2">
+        <label for="f-brand">Brand<input type="text" id="f-brand" maxlength="32" required></label>
+        <label for="f-name">Campaign<input type="text" id="f-name" maxlength="40" required></label>
+        <label for="f-head">Headline (22 characters max)<input type="text" id="f-head" maxlength="22" required></label>
+        <label for="f-sub">Supporting line<input type="text" id="f-sub" maxlength="48" required></label>
+      </div>
+      <div class="row"><label for="f-bg">Background<input type="color" id="f-bg" value="#0c4f8a"></label><label for="f-fg">Text<input type="color" id="f-fg" value="#ffe066"></label>
+        <canvas id="prev" class="cr" width="600" height="80" style="flex:1;min-width:200px;aspect-ratio:600/80;align-self:center"></canvas></div>
+      <div><span class="eyebrow" style="margin-bottom:6px">Brand artwork (optional)</span>
+        <div class="artrow"><input type="file" id="f-art" accept="image/png,image/jpeg,image/webp"><button class="btn-sm" type="button" id="f-artClear" hidden>Remove artwork</button><span class="err" id="artErr"></span></div>
+        <p class="hint" style="margin:6px 0 0">PNG, JPG or WebP up to 2 MB. If you add artwork it replaces the headline text in the game. It is fitted without cropping, with the background colour around it. Best sizes: bridge banners 1400 × 200 px, danfo rear panels 600 × 260 px.</p></div>
+      <div><span class="eyebrow" style="margin-bottom:6px">Placements</span><div class="checks"><label><input type="checkbox" id="f-bb" checked> Bridge banners</label><label><input type="checkbox" id="f-danfo"> Danfo rear panels</label></div></div>
+      <div><span class="eyebrow" style="margin-bottom:6px">Zones</span><div class="checks" id="f-zones"></div></div>
+      <div class="grid2"><label for="f-start">Start<input type="date" id="f-start" required></label><label for="f-end">End<input type="date" id="f-end" required></label></div>
+      <label style="display:flex;gap:8px;align-items:center;color:var(--ink);font-weight:400;font-size:13px"><input type="checkbox" id="f-demo" checked> Demo content, not a signed deal</label>
+      <div class="row"><button class="btn" type="submit" id="campSave">Launch campaign</button><span class="err" id="formErr"></span></div>
+    </form>
+  </section>
+
+  <section data-panel="jobs" hidden>
+    <p class="note">These are the jobs on the game menu, in this order. Saving reaches every player within a second, with no update to the game. A run already in progress keeps the rules it started with. Built-in jobs can be edited or switched off but not deleted.</p>
+    <div class="tbl"><table><thead><tr><th>Job</th><th>Pickup → destination</th><th>Cargo</th><th class="num">Base pts</th><th>Sponsor</th><th class="num">Played</th><th class="num">Done</th><th class="num">Avg pts</th><th></th></tr></thead><tbody id="jobBody"></tbody></table></div>
+    <form class="newc" id="jobForm" autocomplete="off">
+      <div class="row" style="justify-content:space-between"><span class="eyebrow" id="jobFormTitle">New job</span><button class="btn-sm" type="button" id="jobCancel" hidden>Cancel editing</button></div>
+      <fieldset><legend>On the menu</legend>
+        <div class="grid2">
+          <label>Job title<input type="text" id="j-title" maxlength="28" placeholder="e.g. Jollof delivery" required></label>
+          <label>Icon (an emoji)<input type="text" id="j-icon" maxlength="8" placeholder="🍛" required><span class="emojis" id="j-emojis"></span></label>
+        </div>
+        <label>Description<input type="text" id="j-blurb" maxlength="160" placeholder="Party jollof for a naming ceremony. Don’t spill it!" required><span class="hint">Shown under the job on the menu.</span></label>
+        <div class="grid2">
+          <label>Points for a perfect run<input type="number" id="j-base" min="10" max="1000" value="200"><span class="hint">Plus a time bonus. Built-ins: 100 to 300.</span></label>
+          <label>Pay multiplier<input type="number" id="j-cash" min="0.5" max="3" step="0.1" value="1.2"><span class="hint">1 = normal fare, 1.5 = half as much again.</span></label>
+          <label>Sponsor (optional)<select id="j-sponsor"><option value="">No sponsor</option></select><span class="hint">Shows “Sponsored by …” and brand colours on the destination sign. Counted in Analytics.</span></label>
+        </div>
+      </fieldset>
+      <fieldset><legend>Pickup</legend>
+        <div class="grid2">
+          <label>Who is waiting<select id="j-pickup"></select></label>
+          <label>What they shout<input type="text" id="j-call" maxlength="30" placeholder="JOLLOF DEY HOT!"></label>
+          <label>Job card line<input type="text" id="j-ptitle" maxlength="40" placeholder="Jollof for {who}"><span class="hint">{who} is replaced with one of the names below.</span></label>
+        </div>
+        <label>Names or customers (one per line, picked at random)<textarea id="j-who" placeholder="Mama Tolu&#10;the Adeyemi naming ceremony"></textarea></label>
+      </fieldset>
+      <fieldset><legend>Destination</legend>
+        <div class="grid2">
+          <label>Destination name<input type="text" id="j-dest" maxlength="28" placeholder="Naming ceremony" required><span class="hint">Shown on the sign and in the job card, with the zone name.</span></label>
+          <label>Destination look<select id="j-dstyle"></select></label>
+        </div>
+      </fieldset>
+      <fieldset><legend>Challenge</legend>
+        <div class="grid2">
+          <label>Cargo meter label<input type="text" id="j-meter" maxlength="12" placeholder="Jollof"><span class="hint">Leave empty for no meter (like a normal passenger).</span></label>
+          <label>How fragile<select id="j-frag"><option value="none">Not fragile</option><option value="low">A little (like the labour job)</option><option value="medium">Quite (like the stew)</option><option value="high">Very (like the cake)</option></select><span class="hint">How much potholes, scrapes and hard braking hurt the meter.</span></label>
+          <label>Time pressure<select id="j-tight"><option value="0">Normal</option><option value="1">Tight (emergency)</option></select></label>
+        </div>
+        <div class="checks">
+          <label><input type="checkbox" id="j-fail" checked> Job fails if the meter hits 0%</label>
+          <label><input type="checkbox" id="j-contr"> Contractions (bumps every 10 s count double, like the labour job)</label>
+        </div>
+      </fieldset>
+      <fieldset><legend>Messages</legend>
+        <div class="grid2">
+          <label>When loaded<input type="text" id="j-mload" maxlength="120" placeholder="Jollof loaded. Easy on the brakes!"></label>
+          <label>When delivered<input type="text" id="j-mok" maxlength="140" placeholder="The celebrant danced when she saw you."></label>
+          <label>If ruined<input type="text" id="j-mruin" maxlength="140" placeholder="Jollof all over the back seat."></label>
+          <label>If too late<input type="text" id="j-mlate" maxlength="140" placeholder="They ordered from Mama Put instead."></label>
+        </div>
+      </fieldset>
+      <div><span class="eyebrow" style="margin-bottom:6px">Preview on the menu</span><div class="jobprev"><span class="ic" id="jp-ic">🍛</span><span><small id="jp-sm">New job</small><b id="jp-t">Jollof delivery</b><em id="jp-b"></em></span></div></div>
+      <label style="display:flex;gap:8px;align-items:center;color:var(--ink);font-weight:400;font-size:13px"><input type="checkbox" id="j-enabled" checked> Show this job on the menu</label>
+      <div class="row"><button class="btn" type="submit" id="jobSave">Add job</button><span class="err" id="jobErr"></span></div>
+    </form>
+  </section>
+
+  <section data-panel="inventory" hidden>
+    <div class="row"><label for="invDate">Show inventory as of<input type="date" id="invDate"></label></div>
+    <div class="tbl"><table><thead><tr><th>Placement</th><th>Format</th><th>Zone</th><th class="num">Visibility</th><th>Tier</th><th>Showing</th></tr></thead><tbody id="invBody"></tbody></table></div>
+    <p class="note">Visibility scores and price tiers are placeholders until there is real traffic data to price against.</p>
+  </section>
+
+  <section data-panel="analytics" hidden>
+    <p class="note"><b style="color:var(--ink)">Impression</b>: at least half the creative on a player's screen for 1 continuous second, counted once per pass. Clients report in 5-second batches; the server drops unknown campaigns or placements and caps exposure at 60 seconds per report.</p>
+    <div class="tbl"><table><thead><tr><th>Campaign</th><th>Status</th><th class="num">Impressions</th><th class="num">Unique drivers</th><th class="num">Exposure</th><th class="num">Avg / impr.</th><th class="num">Placements</th><th class="num">Sponsored jobs played</th><th class="num">Completed</th></tr></thead><tbody id="anBody"></tbody></table></div>
+  </section>
+
+  <section data-panel="players" hidden>
+    <span class="eyebrow">Reports</span>
+    <div class="tbl"><table><thead><tr><th>When</th><th>Reporter</th><th>Reported driver</th><th>Reason</th><th></th></tr></thead><tbody id="repBody"></tbody></table></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span class="eyebrow">Drivers</span><button class="btn-sm" type="button" id="csvBtn">Download emails (CSV)</button></div>
+    <p class="note" style="margin:0">Only email drivers who ticked “Send me news” (News = Yes). The CSV includes everyone so you can see who opted in and when.</p>
+    <div class="tbl"><table><thead><tr><th>Driver</th><th>Email</th><th>News</th><th class="num">Points</th><th class="num">Wallet</th><th>Last seen</th><th></th></tr></thead><tbody id="plBody"></tbody></table></div>
+  </section>
+</div>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const naira=n=>(n<0?'−':'')+'₦'+Math.abs(Math.round(n)).toLocaleString('en-NG');
+const fmtDate=s=>new Date(s+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+const typeLabel=t=>t==='BILLBOARD'?'Bridge banners':'Danfo rear panels';
+const zoneNames=ids=>ids.length===5?'All zones':ids.map(id=>LD.ZONES.find(z=>z.id===id).name).join(', ');
+let token='';try{token=sessionStorage.getItem('ld_admin')||''}catch(_){}
+let tab='overview',editingCamp=null,artUrl=null,JOBS=[],editingJob=null;
+
+async function api(path,opts={}){
+  const r=await fetch('/api/admin/'+path,{...opts,headers:{'content-type':'application/json',authorization:'Bearer '+token}});
+  const body=await r.json().catch(()=>({}));
+  if(r.status===401){$('#authErr').hidden=false;$('#authErr').textContent='That admin token was not accepted. It is printed in the server log when the server starts, or set as ADMIN_TOKEN.';throw new Error('auth')}
+  $('#authErr').hidden=true;
+  if(!r.ok)throw Object.assign(new Error(body.error||(body.errors||[]).join(' ')),{body});
+  return body;
+}
+$('#saveTok').addEventListener('click',()=>{token=$('#tok').value.trim();try{sessionStorage.setItem('ld_admin',token)}catch(_){}load()});
+$('#tok').value=token;
+
+const IMGS=new Map();
+function art(url,onload){if(!url)return null;let i=IMGS.get(url);if(!i){i=new Image();i.src=url;IMGS.set(url,i)}if(i.complete&&i.naturalWidth)return i;i.addEventListener('load',onload,{once:true});return null}
+function drawCreative(g,c,w,h,redraw){
+  g.clearRect(0,0,w,h);g.fillStyle=c.bg;g.fillRect(0,0,w,h);
+  const pic=art(c.image,redraw);
+  if(pic){const s=Math.min(w/pic.naturalWidth,h/pic.naturalHeight),dw=pic.naturalWidth*s,dh=pic.naturalHeight*s;g.drawImage(pic,(w-dw)/2,(h-dh)/2,dw,dh);
+    if(c.demo){const tw=h*.62,th=h*.2;g.fillStyle=c.fg;g.fillRect(w-tw-3,3,tw,th);g.fillStyle=c.bg;g.font=`800 ${th*.72}px Archivo, sans-serif`;g.textAlign='center';g.textBaseline='middle';g.fillText('DEMO',w-tw/2-3,3+th/2+.5)}return}
+  g.fillStyle=c.fg;g.textAlign='center';g.textBaseline='middle';
+  let s=h*.46;g.font=`${s}px Bungee, Impact, sans-serif`;while(g.measureText(c.headline).width>w*.86&&s>6){s-=.5;g.font=`${s}px Bungee, Impact, sans-serif`}g.fillText(c.headline,w/2,h*.4);
+  let s2=h*.2;g.font=`600 ${s2}px Archivo, sans-serif`;while(g.measureText(c.sub).width>w*.9&&s2>5){s2-=.5;g.font=`600 ${s2}px Archivo, sans-serif`}g.fillText(c.sub,w/2,h*.78);
+  if(c.demo){const tw=h*.62,th=h*.2;g.fillRect(w-tw-3,3,tw,th);g.fillStyle=c.bg;g.font=`800 ${th*.72}px Archivo, sans-serif`;g.fillText('DEMO',w-tw/2-3,3+th/2+.5)}
+}
+
+async function load(){
+  for(const s of $$('section'))s.hidden=s.dataset.panel!==tab;
+  try{
+    if(tab==='overview'){
+      const [o,c,a]=await Promise.all([api('overview'),api('campaigns'),api('analytics')]);
+      $('#oOnline').textContent=o.online;$('#oPlayers').textContent=o.players;
+      $('#oLive').textContent=c.campaigns.filter(x=>x.status==='Live').length;
+      $('#oImp').textContent=a.rows.reduce((n,r)=>n+r.impressions,0).toLocaleString();
+      $('#oShards').innerHTML=o.shards.length?o.shards.map(s=>`<tr><td class="mono">${esc(s.id)}</td><td>${esc(LD.ZONES.find(z=>z.id===s.zone).name)}</td><td class="num">${s.players}</td></tr>`).join(''):'<tr><td colspan="3">No drivers online right now.</td></tr>';
+    }
+    if(tab==='campaigns'){
+      const {campaigns}=await api('campaigns');const box=$('#campList');box.innerHTML='';
+      if(!campaigns.length)box.innerHTML='<p class="note">No campaigns yet. Every banner is showing the house ad.</p>';
+      for(const c of campaigns){
+        const el=document.createElement('div');el.className='camp';
+        el.innerHTML=`<div class="row" style="justify-content:space-between;align-items:flex-start"><div><h3>${esc(c.brand)} · ${esc(c.name)}</h3><div class="meta">${c.types.map(typeLabel).join(' + ')} · ${esc(zoneNames(c.zones))}<br>${fmtDate(c.start)} – ${fmtDate(c.end)}</div></div><div class="row" style="gap:6px">${c.demo?'<span class="pill demo">Demo</span>':''}<span class="pill ${c.status}">${c.status}</span></div></div>
+          <canvas class="cr" width="600" height="76"></canvas>
+          <div class="row"><button type="button" class="btn-sm" data-a="edit">Edit</button><button type="button" class="btn-sm" data-a="toggle">${c.enabled?'Pause':'Resume'}</button><button type="button" class="btn-sm" data-a="demo">${c.demo?'Mark as signed deal':'Mark as demo'}</button><button type="button" class="btn-sm warn" data-a="del">Remove</button></div>`;
+        const cv=el.querySelector('canvas'),drawIt=()=>drawCreative(cv.getContext('2d'),c,600,76,drawIt);drawIt();
+        el.querySelector('[data-a=edit]').onclick=()=>editCampaign(c);
+        el.querySelector('[data-a=toggle]').onclick=async()=>{await api('campaigns/'+c.id,{method:'PATCH',body:JSON.stringify({enabled:!c.enabled})});load()};
+        el.querySelector('[data-a=demo]').onclick=async()=>{await api('campaigns/'+c.id,{method:'PATCH',body:JSON.stringify({demo:!c.demo})});load()};
+        const del=el.querySelector('[data-a=del]');
+        del.onclick=async()=>{if(!del.dataset.armed){del.dataset.armed=1;del.textContent='Click again to remove';return}await api('campaigns/'+c.id,{method:'DELETE'});load()};
+        box.appendChild(el);
+      }
+    }
+    if(tab==='jobs'){
+      const [{jobs,stats,pickupStyles,destStyles},{campaigns}]=await Promise.all([api('jobs'),api('campaigns')]);
+      if(!$('#j-pickup').options.length){$('#j-pickup').innerHTML=Object.entries(pickupStyles).map(([k,v])=>`<option value="${k}">${esc(v)}</option>`).join('');$('#j-dstyle').innerHTML=Object.entries(destStyles).map(([k,v])=>`<option value="${k}">${esc(v)}</option>`).join('');$('#j-pickup').value='cooler';$('#j-dstyle').value='owambe'}
+      const cur=$('#j-sponsor').value;$('#j-sponsor').innerHTML='<option value="">No sponsor</option>'+campaigns.map(c=>`<option value="${esc(c.id)}">${esc(c.brand)} · ${esc(c.name)}${c.demo?' (demo)':''}</option>`).join('');$('#j-sponsor').value=cur;
+      JOBS=jobs;
+      $('#jobBody').innerHTML=jobs.map((j,i)=>{const st=stats[j.id]||{};return `<tr style="${j.enabled?'':'opacity:.55'}"><td class="wr"><span style="font-size:18px">${esc(j.icon)}</span> <b>${esc(j.title)}</b> ${j.builtin?'<span class="tag">built-in</span>':''} ${j.enabled?'':'<span class="tag">off</span>'}</td>
+        <td class="wr">${esc(pickupStyles[j.pickup]||j.pickup)} → ${esc(j.dest)}</td><td>${j.meter?esc(j.meter)+' · '+esc(j.fragility):'—'}</td><td class="num">${j.base}</td><td>${j.sponsor?esc(j.sponsor.brand):'—'}</td>
+        <td class="num">${st.started||0}</td><td class="num">${st.completed||0}</td><td class="num">${st.avgPoints||'—'}</td>
+        <td><div class="acts"><button class="btn-sm" type="button" data-j="up" data-id="${esc(j.id)}" ${i===0?'disabled':''} aria-label="Move up">↑</button><button class="btn-sm" type="button" data-j="down" data-id="${esc(j.id)}" ${i===jobs.length-1?'disabled':''} aria-label="Move down">↓</button><button class="btn-sm" type="button" data-j="edit" data-id="${esc(j.id)}">Edit</button><button class="btn-sm" type="button" data-j="toggle" data-id="${esc(j.id)}">${j.enabled?'Hide':'Show'}</button>${j.builtin?'':`<button class="btn-sm warn" type="button" data-j="del" data-id="${esc(j.id)}">Delete</button>`}</div></td></tr>`}).join('');
+      for(const b of $$('[data-j]'))b.onclick=async()=>{const id=b.dataset.id,j=JOBS.find(x=>x.id===id);
+        try{
+          if(b.dataset.j==='up'||b.dataset.j==='down')await api(`jobs/${id}/move`,{method:'POST',body:JSON.stringify({dir:b.dataset.j==='up'?-1:1})});
+          if(b.dataset.j==='toggle')await api(`jobs/${id}`,{method:'PATCH',body:JSON.stringify({enabled:!j.enabled})});
+          if(b.dataset.j==='edit'){editJob(j);return}
+          if(b.dataset.j==='del'){if(!b.dataset.armed){b.dataset.armed=1;b.textContent='Click again to delete';return}await api(`jobs/${id}`,{method:'DELETE'})}
+          load();
+        }catch(e){if(e.message!=='auth')alert(e.message)}};
+    }
+    if(tab==='inventory'){
+      if(!$('#invDate').value)$('#invDate').value=LD.isoDate();
+      const {placements}=await api('inventory?date='+$('#invDate').value);
+      $('#invBody').innerHTML=placements.map(p=>`<tr><td class="mono">${p.id}</td><td>${p.format}</td><td>${LD.ZONES.find(z=>z.id===p.zone).name}</td><td class="num">${p.visibility}</td><td>${p.tier}</td><td>${esc(p.showing)}</td></tr>`).join('');
+    }
+    if(tab==='analytics'){
+      const {rows}=await api('analytics');
+      $('#anBody').innerHTML=rows.map(r=>`<tr><td>${esc(r.label)}</td><td><span class="pill ${r.status}">${r.status}</span></td><td class="num">${r.impressions.toLocaleString()}</td><td class="num">${r.uniquePlayers}</td><td class="num">${r.exposureSec}s</td><td class="num">${r.avgExposureSec??'—'}${r.avgExposureSec!=null?'s':''}</td><td class="num">${r.placements}</td><td class="num">${r.jobsStarted||0}</td><td class="num">${r.jobsCompleted||0}</td></tr>`).join('');
+    }
+    if(tab==='players'){
+      const [{players},{reports}]=await Promise.all([api('players'),api('reports')]);
+      $('#repBody').innerHTML=reports.length?reports.map(r=>`<tr><td>${new Date(r.created_at).toLocaleString('en-GB')}</td><td>${esc(r.reporter)}</td><td>${esc(r.target)}</td><td>${esc(r.reason)}</td><td><button class="btn-sm warn" type="button" data-ban="${esc(r.target_id)}">Ban</button></td></tr>`).join(''):'<tr><td colspan="5">No reports.</td></tr>';
+      $('#plBody').innerHTML=players.map(p=>`<tr><td>${esc(p.name)}${p.banned?' <span class="pill Ended">Banned</span>':''}</td><td>${p.email?esc(p.email):'<span style="opacity:.6">guest (no email)</span>'}</td><td>${p.marketing?'Yes':'No'}</td><td class="num">${(p.points||0).toLocaleString()}</td><td class="num">${naira(p.wallet)}</td><td>${p.last_seen?new Date(p.last_seen).toLocaleString('en-GB'):'—'}</td><td style="display:flex;gap:6px">${p.email?`<button class="btn-sm" type="button" data-pin="${esc(p.id)}" data-name="${esc(p.name)}">Reset PIN</button>`:''}<button class="btn-sm ${p.banned?'':'warn'}" type="button" data-ban="${esc(p.id)}" data-un="${p.banned?1:''}">${p.banned?'Unban':'Ban'}</button></td></tr>`).join('');
+      for(const b of $$('[data-pin]'))b.onclick=async()=>{if(!confirm(`Give ${b.dataset.name} a new PIN? Their old PIN stops working.`))return;const r=await api(`players/${b.dataset.pin}/pin`,{method:'POST',body:'{}'});alert(`New PIN for ${b.dataset.name}: ${r.pin}\n\nSend it to them privately. They can sign back in with their email and this PIN.`)};
+      for(const b of $$('[data-ban]'))b.onclick=async()=>{await api(`players/${b.dataset.ban}/ban`,{method:'POST',body:JSON.stringify({banned:!b.dataset.un})});load()};
+    }
+  }catch(e){if(e.message!=='auth')console.error(e)}
+}
+$('#csvBtn').addEventListener('click',async()=>{const r=await fetch('/api/admin/players.csv',{headers:{authorization:'Bearer '+token}});if(!r.ok)return alert('Could not download. Check the admin token.');const url=URL.createObjectURL(await r.blob());const a=document.createElement('a');a.href=url;a.download='lagos-driver-players.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
+for(const b of $$('#tabs button'))b.addEventListener('click',()=>{tab=b.dataset.tab;for(const x of $$('#tabs button'))x.setAttribute('aria-selected',x===b);load()});
+$('#invDate').addEventListener('change',load);
+$('#f-zones').innerHTML=LD.ZONES.map(z=>`<label><input type="checkbox" name="fz" value="${z.id}" ${z.id==='IKJ'?'checked':''}> ${z.name}</label>`).join('');
+$('#f-start').value=LD.isoDate();{const d=new Date();d.setDate(d.getDate()+30);$('#f-end').value=LD.isoDate(d)}
+const formC=()=>({headline:($('#f-head').value||'HEADLINE').toUpperCase(),sub:$('#f-sub').value||' ',bg:$('#f-bg').value,fg:$('#f-fg').value,demo:$('#f-demo').checked,image:artUrl});
+const prev=()=>drawCreative($('#prev').getContext('2d'),formC(),600,80,prev);
+for(const id of['f-head','f-sub','f-bg','f-fg','f-demo'])$('#'+id).addEventListener('input',prev);
+$('#newCamp').addEventListener('submit',async e=>{
+  e.preventDefault();$('#formErr').textContent='';
+  const types=[];if($('#f-bb').checked)types.push('BILLBOARD');if($('#f-danfo').checked)types.push('DANFO');
+  const body={brand:$('#f-brand').value,name:$('#f-name').value,...formC(),sub:$('#f-sub').value,types,zones:$$('input[name=fz]:checked').map(i=>i.value),start:$('#f-start').value,end:$('#f-end').value};
+  try{
+    if(editingCamp)await api('campaigns/'+editingCamp,{method:'PATCH',body:JSON.stringify(body)});else await api('campaigns',{method:'POST',body:JSON.stringify(body)});
+    resetCampForm();load()}
+  catch(err){if(err.message!=='auth')$('#formErr').textContent=err.message}
+});
+document.fonts&&document.fonts.ready.then(prev);prev();
+/* ---- Edit a campaign and its artwork ---- */
+function setArt(url){artUrl=url;$('#f-artClear').hidden=!url;prev()}
+function editCampaign(c){
+  editingCamp=c.id;$('#campFormTitle').textContent=`Editing: ${c.brand} · ${c.name}`;$('#campSave').textContent='Save changes';$('#campCancel').hidden=false;
+  $('#f-brand').value=c.brand;$('#f-name').value=c.name;$('#f-head').value=c.headline;$('#f-sub').value=c.sub;$('#f-bg').value=c.bg;$('#f-fg').value=c.fg;
+  $('#f-bb').checked=c.types.includes('BILLBOARD');$('#f-danfo').checked=c.types.includes('DANFO');
+  for(const i of $$('input[name=fz]'))i.checked=c.zones.includes(i.value);
+  $('#f-start').value=c.start;$('#f-end').value=c.end;$('#f-demo').checked=c.demo;$('#f-art').value='';setArt(c.image||null);
+  $('#newCamp').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function resetCampForm(){editingCamp=null;$('#newCamp').reset();$('#campFormTitle').textContent='New campaign';$('#campSave').textContent='Launch campaign';$('#campCancel').hidden=true;$('#f-start').value=LD.isoDate();{const d=new Date();d.setDate(d.getDate()+30);$('#f-end').value=LD.isoDate(d)}for(const i of $$('input[name=fz]'))i.checked=i.value==='IKJ';setArt(null)}
+$('#campCancel').addEventListener('click',resetCampForm);
+$('#f-artClear').addEventListener('click',()=>{$('#f-art').value='';setArt(null)});
+$('#f-art').addEventListener('change',async e=>{
+  const f=e.target.files[0];$('#artErr').textContent='';if(!f)return;
+  if(f.size>2*1024*1024){$('#artErr').textContent='That image is over 2 MB.';e.target.value='';return}
+  const dataUrl=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)});
+  try{const r=await api('creatives',{method:'POST',body:JSON.stringify({dataUrl})});setArt(r.url)}catch(err){if(err.message!=='auth')$('#artErr').textContent=err.message;e.target.value=''}
+});
+
+/* ---- Jobs form ---- */
+const EMOJI=['🧍🏾','🎂','🍲','🍛','🤰🏾','📦','💐','🐐','🍞','🛢️','🎁','💊','🥤','👰🏾','🧳','🍗','📚','🎤','🐔','🥥'];
+$('#j-emojis').innerHTML=EMOJI.map(e=>`<button type="button" aria-label="Use ${e}">${e}</button>`).join('');
+for(const b of $$('#j-emojis button'))b.onclick=()=>{$('#j-icon').value=b.textContent;jobPrev()};
+function jobPrev(){$('#jp-ic').textContent=$('#j-icon').value||'❓';$('#jp-t').textContent=$('#j-title').value||'Job title';$('#jp-b').textContent=$('#j-blurb').value;
+  const sp=$('#j-sponsor').selectedOptions[0];$('#jp-sm').textContent=$('#j-sponsor').value?`Sponsored by ${sp.textContent.split(' · ')[0]}`:'Up to '+($('#j-base').value||0)+'+ pts'}
+for(const id of['j-icon','j-title','j-blurb','j-base','j-sponsor'])$('#'+id).addEventListener('input',jobPrev);
+function jobBody(){return{title:$('#j-title').value,icon:$('#j-icon').value,blurb:$('#j-blurb').value,base:+$('#j-base').value,cash:+$('#j-cash').value,sponsorId:$('#j-sponsor').value||null,
+  pickup:$('#j-pickup').value,call:$('#j-call').value,pickupTitle:$('#j-ptitle').value||'{who}',who:$('#j-who').value,dest:$('#j-dest').value,destStyle:$('#j-dstyle').value,
+  meter:$('#j-meter').value,fragility:$('#j-meter').value?$('#j-frag').value:'none',tight:$('#j-tight').value==='1',failAt0:$('#j-fail').checked,contractions:$('#j-contr').checked,
+  msgLoaded:$('#j-mload').value,msgOk:$('#j-mok').value,msgRuined:$('#j-mruin').value,msgLate:$('#j-mlate').value,enabled:$('#j-enabled').checked}}
+function editJob(j){
+  editingJob=j.id;$('#jobFormTitle').textContent=`Editing: ${j.title}`;$('#jobSave').textContent='Save changes';$('#jobCancel').hidden=false;$('#jobErr').textContent='';
+  $('#j-title').value=j.title;$('#j-icon').value=j.icon;$('#j-blurb').value=j.blurb;$('#j-base').value=j.base;$('#j-cash').value=j.cash;$('#j-sponsor').value=j.sponsorId||'';
+  $('#j-pickup').value=j.pickup;$('#j-call').value=j.call||'';$('#j-ptitle').value=j.pickupTitle||'';$('#j-who').value=(j.who||[]).join('\n');$('#j-dest').value=j.dest;$('#j-dstyle').value=j.destStyle;
+  $('#j-meter').value=j.meter||'';$('#j-frag').value=j.fragility;$('#j-tight').value=j.tight?'1':'0';$('#j-fail').checked=!!j.failAt0;$('#j-contr').checked=!!j.contractions;
+  $('#j-mload').value=j.msgLoaded||'';$('#j-mok').value=j.msgOk||'';$('#j-mruin').value=j.msgRuined||'';$('#j-mlate').value=j.msgLate||'';$('#j-enabled').checked=j.enabled;
+  jobPrev();$('#jobForm').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function resetJobForm(){editingJob=null;$('#jobForm').reset();$('#jobFormTitle').textContent='New job';$('#jobSave').textContent='Add job';$('#jobCancel').hidden=true;$('#j-pickup').value='cooler';$('#j-dstyle').value='owambe';jobPrev()}
+$('#jobCancel').addEventListener('click',resetJobForm);
+$('#jobForm').addEventListener('submit',async e=>{
+  e.preventDefault();$('#jobErr').textContent='';
+  try{
+    if(editingJob)await api('jobs/'+editingJob,{method:'PATCH',body:JSON.stringify(jobBody())});else await api('jobs',{method:'POST',body:JSON.stringify(jobBody())});
+    resetJobForm();load();
+  }catch(err){if(err.message!=='auth')$('#jobErr').textContent=err.message}
+});
+jobPrev();
+
+setInterval(()=>{if(tab==='overview'||tab==='analytics')load()},5000);
+if(token)load();
+})();
+</script>
+</body>
+</html>

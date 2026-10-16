@@ -1,0 +1,18 @@
+{
+  "name": "lagos-driver-server",
+  "version": "0.1.0",
+  "description": "Lagos Driver online game server: multiplayer zones, server-authoritative economy, Brand Network",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node --no-warnings server/index.js",
+    "dev": "node --no-warnings --watch server/index.js",
+    "test": "node --no-warnings --test test/*.test.js"
+  },
+  "dependencies": {
+    "ws": "^8.22.0"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.5"
+  }
+}
